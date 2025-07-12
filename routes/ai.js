@@ -6,8 +6,8 @@ dotenv.config();
 const router = express.Router();
 const _baseUrl = "https://api.anthropic.com/v1/messages";
 const _apiVersion = "2023-06-01";
-const _model = "claude-3-5-sonnet-20241022";
-const _maxTokens = 5000;
+const _model = "claude-3-haiku-20240307";
+const _maxTokens = 1024;
 const _claudeKey = process.env.ANTHROPIC_API_KEY;
 
 function buildPrompt(userData) {
