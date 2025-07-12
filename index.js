@@ -18,7 +18,7 @@ const api_url = process.env.API_URL || "/api";
 const mongodb_url = process.env.MONGODB_URL;
 
 // Middleware
-app.use(cors()); // Cho phép CORS
+app.use(cors({ origin: '*' })); // hoặc giới hạn origin cho an toàn
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
