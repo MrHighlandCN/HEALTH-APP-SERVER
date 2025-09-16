@@ -22,6 +22,16 @@ app.use(cors({ origin: '*' })); // hoặc giới hạn origin cho an toàn
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(morgan(":method :url :status :response-time ms - :res[content-length]"));
+
+// 👉 Log body request (debug thêm)
+app.use((req, res, next) => {
+  if (req.body && Object.keys(req.body).length > 0) {
+    console.log("📩 Request Body:", req.body);
+  }
+  next();
+});
+
 // Kết nối MongoDB
 mongoose.set("strictQuery", true);
 mongoose.connect(mongodb_url)
@@ -38,6 +48,13 @@ app.use(`${api_url}/users`, users);
 app.use(`${api_url}/auth`, auth);
 app.use(`${api_url}/groups`, groups);
 app.use(`${api_url}/ai`, ai);
+
+// 👉 Middleware bắt lỗi (nên đặt cuối cùng)
+app.use((err, req, res, next) => {
+  console.error("❌ Error:", err.stack || err.message);
+  res.status(500).json({ error: "Internal Server Error" });
+});
+
 
 // Lắng nghe server (không truyền HOST → phù hợp cloud)
 app.listen(port, () => {
