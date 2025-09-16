@@ -6,7 +6,7 @@ const BMI_THRESHOLDS = {
 
 export function evaluate_bmi(bmi, age, gender, race) {
     const thresholds = BMI_THRESHOLDS[race ? race : "asian"];
-    let status, message, recommendation = "";
+    let status = "", message = "", recommendation = "";
     if (bmi && age && gender) {
 
 
