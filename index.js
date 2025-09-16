@@ -7,6 +7,8 @@ import users from "./routes/users.js";
 import auth from "./routes/auth.js";
 import groups from "./routes/groups.js";
 import ai from "./routes/ai.js";
+import morgan from "morgan";
+
 
 import cors from "cors";
 
