@@ -1,6 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import os from "os";
+
 dotenv.config();
 
 import users from "./routes/users.js";
@@ -27,12 +29,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan(":method :url :status :response-time ms - :res[content-length]"));
 
 // 👉 Log body request (debug thêm)
-app.use((req, res, next) => {
-  if (req.body && Object.keys(req.body).length > 0) {
-    console.log("📩 Request Body:", req.body);
-  }
-  next();
-});
+// app.use((req, res, next) => {
+//   if (req.body && Object.keys(req.body).length > 0) {
+//     console.log("📩 Request Body:", req.body);
+//   }
+//   next();
+// });
 
 // Kết nối MongoDB
 mongoose.set("strictQuery", true);
@@ -60,5 +62,20 @@ app.use((err, req, res, next) => {
 
 // Lắng nghe server (không truyền HOST → phù hợp cloud)
 app.listen(port, () => {
-  console.log(`🚀 Server is running at http://localhost:${port}${api_url}`);
+  const networkInterfaces = os.networkInterfaces();
+  let localIp = "127.0.0.1";
+
+  for (const iface of Object.values(networkInterfaces)) {
+    for (const net of iface) {
+      if (net.family === "IPv4" && !net.internal) {
+        localIp = net.address;
+        break;
+      }
+    }
+  }
+
+  console.log(`🚀 Server is running:`);
+  console.log(`   Local:   http://localhost:${port}${api_url}`);
+  console.log(`   Network: http://${localIp}:${port}${api_url}`);
 });
+
