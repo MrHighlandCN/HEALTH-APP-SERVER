@@ -35,6 +35,7 @@ export const googleSignIn = async (req, res) => {
                 googleId,
                 email,
                 fullName,
+                username: email
             });
             await user.save();
         }
